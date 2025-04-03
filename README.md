@@ -19,4 +19,4 @@ git clone https://github.com/Alfonso-Sanchez/SONDEO-AROME.git
 ````
 
 ## 🌍 Online
-[AromeSounding](https://alfonso-sanchez.github.io/SONDEO-AROME/)
+Puedes también usarlo mediante github pages accediendo a [AromeSounding](https://alfonso-sanchez.github.io/SONDEO-AROME/).
