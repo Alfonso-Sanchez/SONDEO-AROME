@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mapa Sondeo AROME</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <style>
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    #content {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+    }
+
+    #map {
+      width: 30%;
+      height: 100%;
+    }
+
+    #sondeo {
+      width: 70%;
+      height: 100%;
+      border: none;
+    }
+
+    #slider-overlay {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    #slider-box {
+      background: rgba(230, 230, 230, 0.95);
+      border-radius: 10px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto; /* Permitir interacción solo dentro */
+    }
+
+    #echRange {
+      width: 300px;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      height: 6px;
+      background: #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      background: #007bff;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      background: #007bff;
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+
+    #echValue {
+      font-weight: bold;
+      min-width: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div id="slider-overlay">
+    <div id="slider-box">
+      <input type="range" id="echRange" min="1" max="51" value="1" />
+      <span id="echValue">+1h</span>
+    </div>
+  </div>
+
+  <div id="content">
+    <div id="map"></div>
+    <iframe id="sondeo" src=""></iframe>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([40.4637, -3.7492], 6);
+    let currentEch = 1;
+    let lastLatLng = null;
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    let marker;
+
+    function cargarSondeo(lat, lon) {
+      const url = `https://www.meteociel.fr/modeles/sondage2arome.php?mode=0&lon=${lon}&lat=${lat}&ech=${currentEch}&map=10`;
+      document.getElementById('sondeo').src = url;
+    }
+
+    map.on('click', function(e) {
+      const lat = e.latlng.lat.toFixed(6);
+      const lon = e.latlng.lng.toFixed(6);
+      lastLatLng = e.latlng;
+
+      if (marker) {
+        marker.setLatLng(e.latlng);
+      } else {
+        marker = L.marker(e.latlng).addTo(map);
+      }
+
+      cargarSondeo(lat, lon);
+    });
+
+    const echSlider = document.getElementById('echRange');
+    const echDisplay = document.getElementById('echValue');
+
+    let debounceTimeout;
+    let lastEchLoaded = currentEch;
+
+    echSlider.addEventListener('input', () => {
+      currentEch = parseInt(echSlider.value);
+      echDisplay.textContent = `+${currentEch}h`;
+
+      // Cancelamos cualquier llamada pendiente
+      clearTimeout(debounceTimeout);
+
+      // Esperamos 500ms tras la última interacción
+      debounceTimeout = setTimeout(() => {
+        if (lastLatLng && currentEch !== lastEchLoaded) {
+          cargarSondeo(lastLatLng.lat.toFixed(6), lastLatLng.lng.toFixed(6));
+          lastEchLoaded = currentEch;
+        }
+      }, 300);
+    });
+
+  </script>
+</body>
+</html>
