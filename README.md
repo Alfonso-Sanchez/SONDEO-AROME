@@ -1,22 +1,21 @@
-# SONDEO AROME 🔍🌤️
+# AROME SOUNDING 🔍🌤️
 
-Visualizador interactivo de sondeos meteorológicos del modelo AROME (Meteociel), basado en Leaflet y HTML puro. Permite seleccionar cualquier punto del mapa y consultar el sondeo asociado, con selector de hora (+1h a +51h).
+Interactive viewer for AROME (Meteociel) weather model soundings, based on Leaflet and pure HTML. It allows users to select any point on the map and view the associated sounding, with an hour selector (+1h to +51h).
 
-## 🚀 Funcionalidades
+## 🚀 Features
 
-- 🌍 Mapa interactivo (Leaflet)
-- 📍 Click en el mapa para ver el sondeo del modelo AROME
-- ⏱️ Selector de hora (`ech`) flotante con +1h a +51h
-- 📡 Integra directamente los datos desde [Meteociel.fr](https://www.meteociel.fr/)
-- 🧠 Optimizado para evitar saturación del servidor (con debounce)
+- 🌍 Interactive Map (Leaflet)
+- 📍 Click on the map to view the AROME model sounding
+- ⏱️ Floating hour selector (`ech`) from +1h to +51h
+- 📡 Directly integrates data from [Meteociel.fr](https://www.meteociel.fr/)
+- 🧠 Optimized to prevent server saturation (with debounce)
 
-## 🔧 Uso
+## 🔧 Usage
 
-1. Clona el repositorio:
+1. Clone the repository:
 
 ```bash
-git clone https://github.com/Alfonso-Sanchez/SONDEO-AROME.git
-````
-
-## 🌍 Online
-Puedes también usarlo mediante github pages accediendo a [AromeSounding](https://alfonso-sanchez.github.io/SONDEO-AROME/).
+git clone [https://github.com/Alfonso-Sanchez/SONDEO-AROME.git](https://github.com/Alfonso-Sanchez/SONDEO-AROME.git)
+```
+🌍 Online
+You can also use it via GitHub Pages by accessing with github pages.
